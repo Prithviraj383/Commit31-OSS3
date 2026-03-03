@@ -2,11 +2,12 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY --chown=node:node package*.json ./
+RUN npm ci
 
-RUN npm install
+COPY --chown=node:node . .
 
-COPY . .
+USER node
 
 EXPOSE 5173
 
