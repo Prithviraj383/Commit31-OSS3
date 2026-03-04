@@ -74,7 +74,7 @@ The server runs on `http://localhost:5000` by default.
     "email": "john@example.com",
     "password": "securepassword123",
     "role": "student",
-    "contactNumber": "9876543210"
+    "contactNumber": "1234567890"
   }
   ```
   > `role` and `contactNumber` are optional. `role` defaults to `student`.
@@ -122,7 +122,11 @@ The server runs on `http://localhost:5000` by default.
 - **Response (200 OK):**
   ```json
   {
-    "message": "User profile endpoint - To be implemented"
+    "_id": "...",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "role": "student",
+    "contactNumber": "1234567890",
   }
   ```
 
