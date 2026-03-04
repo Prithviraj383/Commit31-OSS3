@@ -10,15 +10,19 @@ The backend follows a standard MVC (Model-View-Controller) architecture:
 backend/
 ├── config/           # Configuration files (e.g., database connection)
 │   └── db.js         # MongoDB connection setup
-├── controllers/      # Route handlers implementing the core logic
+├── controllers/          # Route handlers implementing the core logic
 │   ├── authController.js # Handles registration and login logic
-│   └── userController.js # Handles user-related operations (e.g., fetching profile)
-├── middlewares/      # Custom Express middlewares (e.g., authentication, error handling)
-├── models/           # Mongoose schemas representing database collections
-│   └── userModel.js  # User schema definition
-├── routes/           # API route definitions mapping URLs to controllers
-│   ├── auth.js       # Authentication routes (/api/auth)
-│   └── user.js       # User routes (/api/users)
+│   ├── userController.js # Handles user-related operations (e.g., fetching profile)
+│   └── claimController.js # Handles claim-related operations
+├── middlewares/          # Custom Express middlewares (e.g., authentication, error handling)
+├── models/               # Mongoose schemas representing database collections
+│   ├── userModel.js      # User schema definition
+│   ├── itemModel.js      # Item schema (lost/found items)
+│   └── claimModel.js     # Claim schema (claims on items)
+├── routes/               # API route definitions mapping URLs to controllers
+│   ├── auth.js           # Authentication routes (/api/auth)
+│   ├── user.js           # User routes (/api/users)
+│   └── claim.js          # Claim routes (/api/claims, /api/items/:id/claims)
 ├── package.json      # Project dependencies and scripts
 └── server.js         # Application entry point and server configuration
 ```
@@ -98,3 +102,33 @@ The server will run on `http://localhost:5000` by default.
     "message": "User profile endpoint - To be implemented with JWT"
   }
   ```
+
+---
+
+### 3. Claim Routes
+**Base URL:** `/api`
+
+> Note: These routes are intended to be protected with JWT authentication middleware once implemented.
+
+#### Create Claim
+- **Endpoint:** `POST /claims`
+- **Description:** Create a new claim for a given item.
+- **Request Body (JSON):**
+  ```json
+  {
+    "item": "<itemId>",
+    "proofDescription": "Details to prove ownership or possession"
+  }
+  ```
+- **Behavior:**
+  - Uses the authenticated user as the `claimer`.
+  - Rejects duplicate claims for the same `(item, claimer)` combination.
+
+#### Get Claims for an Item
+- **Endpoint:** `GET /items/:id/claims`
+- **Description:** Returns all claims for a specific item.
+
+#### Update Claim Status
+- **Endpoint:** `PATCH /claims/:id/status`
+- **Description:** Update the status of a claim to `pending`, `approved`, or `rejected`. When a claim is approved, the related item's status is updated (e.g., to `claimed`).
+
