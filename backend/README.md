@@ -134,6 +134,35 @@ The backend will start at: `http://localhost:5000`
 | Method | Endpoint | Description |
 |---|---|---|
 | `GET` | `/me` | Get current user's profile |
+| `PATCH` | `/profile` | Update name and/or contactNumber |
+| `PATCH` | `/email` | Update email (requires current password) |
+| `PATCH` | `/password` | Change password (requires current password) |
+
+**Update Profile:**
+```json
+{
+  "name": "New Name",
+  "contactNumber": "9876543210"
+}
+```
+> Both fields are optional — send only what you want to update.
+
+**Update Email:**
+```json
+{
+  "currentPassword": "yourpassword",
+  "newEmail": "newemail@example.com"
+}
+```
+
+**Change Password:**
+```json
+{
+  "currentPassword": "oldpassword",
+  "newPassword": "newpassword123"
+}
+```
+> Email and password changes require the current password for security verification.
 
 ---
 
